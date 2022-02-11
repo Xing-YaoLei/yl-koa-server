@@ -1,0 +1,32 @@
+{
+  "name": "koa-blog-app",
+  "version": "1.0.0",
+  "description": "通过使用koa以及prisma数据库的一个尝试",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon app.js",
+    "build": "babel src --watch --out-dir dist",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "烟雨任平生x",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.8.7",
+    "@babel/plugin-transform-runtime": "^7.17.0",
+    "@babel/preset-env": "^7.8.7",
+    "@babel/register": "^7.8.6",
+    "prisma": "^3.9.2"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.17.2",
+    "@prisma/client": "^3.9.2",
+    "consola": "^2.15.3",
+    "koa": "^2.13.4",
+    "koa-bodyparser": "^4.3.0",
+    "koa-json": "^2.0.2",
+    "koa-router": "^10.1.1",
+    "koa-static": "^5.0.0",
+    "koa2-cors": "^2.0.6",
+    "nodemon": "^2.0.15"
+  }
+}
