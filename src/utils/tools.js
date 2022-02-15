@@ -1,15 +1,12 @@
-const crypto = require("crypto");
-const salt = "MistyRain";
+const bcrypt = require("bcryptjs");
 /**
  * 密码加密
- * @param {*} pwd 
- * @returns 
+ * @param {*} pwd
+ * @returns
  */
-function encodePWD(pwd) {
-  return crypto
-    .createHash("md5")
-    .update(pwd + salt)
-    .digest("hex");
+function enbcrypt(password) {
+  const salt = bcrypt.genSaltSync(10)
+  return bcrypt.hashSync(password, salt);
 }
 
-export default encodePWD
+export default enbcrypt;

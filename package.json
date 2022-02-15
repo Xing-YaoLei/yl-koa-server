@@ -20,10 +20,13 @@
   "dependencies": {
     "@babel/runtime": "^7.17.2",
     "@prisma/client": "^3.9.2",
+    "bcryptjs": "^2.4.3",
     "consola": "^2.15.3",
+    "jsonwebtoken": "^8.5.1",
     "koa": "^2.13.4",
     "koa-bodyparser": "^4.3.0",
     "koa-json": "^2.0.2",
+    "koa-jwt": "^4.0.3",
     "koa-router": "^10.1.1",
     "koa-static": "^5.0.0",
     "koa2-cors": "^2.0.6",

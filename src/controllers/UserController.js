@@ -2,12 +2,11 @@ import prisma from "../utils/db";
 async function createUser(userInfo) {
   // 创建用户
   try {
-    const { userName, password, nickName } = userInfo;
+    const { userName, password } = userInfo;
     await prisma.user.create({
       data: {
         userName,
-        password,
-        nickName,
+        password
       },
     });
   } catch (err) {
@@ -16,21 +15,25 @@ async function createUser(userInfo) {
 }
 
 /**
- * 判断用户是否存在
- * @param {*} userName 
+ * 判断用户是否存在 如果存在则返回false
  * @returns 
  */
-// 查询用户名是否存在，可以判断该用户是否已经注册过账号
-async function findUsers(userName) {
+async function finUserAlready(userName) {
   const users = await prisma.user.findUnique({
     where: {
       userName,
     },
   });
-  if (users) {
-    return false;
+  if(users){
+    return users
   }
-  return true
+  return false;
 }
 
-export { createUser, findUsers };
+
+/**
+ * 
+ */
+
+
+export { createUser, finUserAlready };
