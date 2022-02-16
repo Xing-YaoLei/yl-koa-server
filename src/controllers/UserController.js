@@ -1,3 +1,4 @@
+import consolaGlobalInstance from "consola";
 import prisma from "../utils/db";
 async function createUser(userInfo) {
   // 创建用户
@@ -6,7 +7,7 @@ async function createUser(userInfo) {
     await prisma.user.create({
       data: {
         userName,
-        password
+        password,
       },
     });
   } catch (err) {
@@ -16,24 +17,22 @@ async function createUser(userInfo) {
 
 /**
  * 判断用户是否存在 如果存在则返回false
- * @returns 
+ * @returns
  */
 async function finUserAlready(userName) {
   const users = await prisma.user.findUnique({
     where: {
       userName,
-    },
+    }
   });
-  if(users){
-    return users
+  if (users) {
+    return users;
   }
   return false;
 }
 
-
 /**
- * 
+ *
  */
-
 
 export { createUser, finUserAlready };

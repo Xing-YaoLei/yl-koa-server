@@ -11,32 +11,50 @@ datasource db {
 }
 
 model user {
-  id       String   @id @unique @default(uuid())
+  id        String   @id @unique @default(uuid())
   // 用户ID  不能重复  默认为UUID
-  userName String   @unique @map("user_name")
+  userName  String   @unique @map("user_name")
   // 用户名 不能重复 @map表示为字段定义别名
-  password String   @default("")
-  nickName String?   @default("一个不愿意透漏姓名的大佬") @map("nickName")
-  address  String?   @default("")
-  createAt DateTime @default(now()) @map("create_at")
-  updateAt DateTime @updatedAt @map("update_at")
+  password  String   @default("")
+  phone     Int?     @unique
+  // 手机号
+  nickName  String?  @default("一个不愿意透漏姓名的大佬") @map("nickName")
+  // 昵称
+  address   String?  @default("")
+  // 地址
+  gender    String?  @default("")
+  // 性别
+  createAt  DateTime @default(now()) @map("create_at")
+  // 创建时间
+  updateAt  DateTime @updatedAt @map("update_at")
+  // 更新时间
+  autograph String   @default("")
+  // 个性签名
   // @@map为数据表定义名字
+  post      post[]
+
   @@map("users")
-  post post[]
 }
 
 model post {
-  id       String   @id @unique @default(uuid())
-  // 建立表的关联关系 
-  author user @relation(fields:[authorId],references: [id])
+  id        String   @id @unique @default(uuid())
+  // 建立表的关联关系
+  author    user     @relation(fields: [authorId], references: [id])
   // fields 表示当前模型中的字段  references表示需要关联的模型中的字段
-  authorId String @default("") @map("author_id")
-  title    String   @default("")
-  desc     String   @default("")
-  content  String   @default("")
-  type String @default("")
-  viewCount Int @default(0)
-  createAt DateTime @default(now()) @map("create_at")
-  updateAt DateTime @updatedAt @map("update_at")
+  authorId  String   @default("") @map("author_id")
+  // 作者ID 关联用户的ID
+  title     String   @default("")
+  // 文章标题
+  desc      String   @default("")
+  // 文章介绍
+  content   String   @default("")
+  // 文章内容
+  type      String   @default("")
+  // 文章类型
+  viewCount Int      @default(0)
+  // 查看人数
+  createAt  DateTime @default(now()) @map("create_at")
+  updateAt  DateTime @updatedAt @map("update_at")
+
   @@map("posts")
 }
