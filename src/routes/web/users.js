@@ -110,7 +110,7 @@ router.post("/login", async (ctx) => {
  * 获取用户信息
  * 无需参数
  * auth需要传递token
- * 从token中获取到当前用户的用户名等内容 
+ * 从token中获取到当前用户的用户名等内容
  * 返回用户的各项用户信息
  */
 router.get("/userInfo", auth, async (ctx) => {
@@ -143,7 +143,5 @@ router.get("/userInfo", auth, async (ctx) => {
     };
   }
 });
-
-
 
 export default router;
