@@ -2,6 +2,7 @@ import Router from "koa-router";
 import jwt from "jsonwebtoken";
 import { createUser, finUserAlready } from "../../controllers/UserController";
 import enbcrypt from "../../utils/tools";
+import { ERROR_HANDLE,ERROR_NOREG } from '../../response/ERROR'
 import keys from "../../utils/keys";
 import bcrypt from "bcryptjs";
 import auth from "../../utils/jwt";
@@ -12,19 +13,26 @@ const router = new Router({
 
 router.get("/", async (ctx) => {
   ctx.body = {
-    msg: "users",
+    msg: "user部分的接口",
   };
 });
 
 /**
- * 用户注册功能
+ * @desc 用户注册功能
+ * @params code userName password
  * 需要提供用户名和密码以及 预留的code 可以是邮箱验证码 也可以是手机验证码，后续添加
- * 返回数据为注册成功  后续添加注册提供token可直接登录
  * 前端方面也可以直接调用login接口完成 注册即登录
  */
 router.post("/register", async (ctx) => {
   const { userName, password, code } = ctx.request.body;
   // 判断是否有验证码，后期添加验证码程序并且校验验证码
+  if ((userName ?? "") == "" || (password ?? "") == "") {
+    // 空值运算符，当userName为undefined和null的时候则会置为空 然后判断为空则进入此if条件判断中
+    ctx.body = {
+      msg: "error",
+    };
+    return false;
+  }
   if (code) {
     // 在注册之前首先判断是否存在该用户名
     const isRegUser = await finUserAlready(userName);
@@ -37,6 +45,7 @@ router.post("/register", async (ctx) => {
       ctx.body = {
         code: 1,
         isSuccess: true,
+        userName,
         msg: "注册成功",
       };
     } else {
@@ -97,12 +106,7 @@ router.post("/login", async (ctx) => {
       };
     }
   } else {
-    ctx.body = {
-      status: 404,
-      code: -2,
-      isSuccess: false,
-      msg: "请先注册",
-    };
+    ERROR_NOREG(ctx)
   }
 });
 
@@ -135,12 +139,22 @@ router.get("/userInfo", auth, async (ctx) => {
       };
     }
   } catch {
-    ctx.body = {
-      status: 500,
-      code: -3,
-      isSuccess: false,
-      msg: "服务端错误，请检查错误或联系管理员",
-    };
+    ERROR_HANDLE(ctx)
+  }
+});
+
+/**
+ * 修改用户信息
+ * auth需要传递token
+ * 从token中获取到当前用户的用户名等内容
+ * 返回用户的各项用户信息
+ *
+ */
+router.post("/edit", auth, async (ctx) => {
+  try{
+
+  } catch {
+    ERROR_HANDLE(ctx)
   }
 });
 

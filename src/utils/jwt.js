@@ -7,6 +7,7 @@ const auth = koaJwt({
 });
 
 /**
+ * 简单测试案例
   router.get('/userinfo',auth(此处添加auth),async(ctx) => {
     ctx.status = 401
     ctx.body = {

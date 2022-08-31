@@ -1,7 +1,7 @@
 {
   "name": "koa-blog-app",
   "version": "1.0.0",
-  "description": "通过使用koa以及prisma数据库的一个尝试",
+  "description": "通过使用koa以及prismaORM + SQLite数据库的一个尝试",
   "main": "index.js",
   "scripts": {
     "start": "nodemon app.js",
@@ -11,15 +11,15 @@
   "author": "烟雨任平生x",
   "license": "ISC",
   "devDependencies": {
-    "@babel/core": "^7.8.7",
-    "@babel/plugin-transform-runtime": "^7.17.0",
-    "@babel/preset-env": "^7.8.7",
-    "@babel/register": "^7.8.6",
-    "prisma": "^3.9.2"
+    "@babel/core": "^7.18.13",
+    "@babel/plugin-transform-runtime": "^7.18.10",
+    "@babel/preset-env": "^7.18.10",
+    "@babel/register": "^7.18.9",
+    "prisma": "^3.15.2"
   },
   "dependencies": {
-    "@babel/runtime": "^7.17.2",
-    "@prisma/client": "^3.9.2",
+    "@babel/runtime": "^7.18.9",
+    "@prisma/client": "^3.15.2",
     "bcryptjs": "^2.4.3",
     "consola": "^2.15.3",
     "jsonwebtoken": "^8.5.1",
@@ -30,6 +30,6 @@
     "koa-router": "^10.1.1",
     "koa-static": "^5.0.0",
     "koa2-cors": "^2.0.6",
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.19"
   }
 }

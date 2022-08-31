@@ -5,7 +5,7 @@ const bcrypt = require("bcryptjs");
  * @returns
  */
 function enbcrypt(password) {
-  const salt = bcrypt.genSaltSync(10)
+  const salt = bcrypt.genSaltSync(10);
   return bcrypt.hashSync(password, salt);
 }
 

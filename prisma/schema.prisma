@@ -18,7 +18,7 @@ model user {
   password  String   @default("")
   phone     Int?     @unique
   // 手机号
-  nickName  String?  @default("一个不愿意透漏姓名的大佬") @map("nickName")
+  nickName  String?  @default("一个不愿意透漏姓名的大佬") @map("nick_name")
   // 昵称
   address   String?  @default("")
   // 地址
