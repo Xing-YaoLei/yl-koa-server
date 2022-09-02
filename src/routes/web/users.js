@@ -1,11 +1,12 @@
 import Router from "koa-router";
 import jwt from "jsonwebtoken";
-import { createUser, finUserAlready } from "../../controllers/UserController";
-import enbcrypt from "../../utils/tools";
-import { ERROR_HANDLE,ERROR_NOREG } from '../../response/ERROR'
+import { createUser, finUserAlready,editUserInfo } from "../../controllers/UserController";
+import { isVerifyRequired, enbcrypt } from "../../utils/tools";
+import { ERROR_HANDLE, ERROR_NOREG } from "../../response/ERROR";
 import keys from "../../utils/keys";
 import bcrypt from "bcryptjs";
 import auth from "../../utils/jwt";
+import { prisma } from "@prisma/client";
 
 const router = new Router({
   prefix: "/users",
@@ -26,45 +27,36 @@ router.get("/", async (ctx) => {
 router.post("/register", async (ctx) => {
   const { userName, password, code } = ctx.request.body;
   // 判断是否有验证码，后期添加验证码程序并且校验验证码
-  if ((userName ?? "") == "" || (password ?? "") == "") {
-    // 空值运算符，当userName为undefined和null的时候则会置为空 然后判断为空则进入此if条件判断中
-    ctx.body = {
-      msg: "error",
-    };
-    return false;
-  }
-  if (code) {
-    // 在注册之前首先判断是否存在该用户名
-    const isRegUser = await finUserAlready(userName);
-    if (!isRegUser) {
-      // 如果方法返回true 则进行
-      await createUser({
-        userName,
-        password: enbcrypt(password),
-      });
-      ctx.body = {
-        code: 1,
-        isSuccess: true,
-        userName,
-        msg: "注册成功",
-      };
-    } else {
-      // 如果存在则返回用户名已经存在的结果
-      ctx.body = {
-        code: -1,
-        isSuccess: false,
-        msg: "您的用户名已存在",
-      };
-    }
-  } else {
-    // 如果没有验证码，则返回需要填写验证码的提示信息
-    ctx.status = 403;
+  const { isValid,errors } = isVerifyRequired({ userName, password, code });
+  if (!isValid) {
     ctx.body = {
       code: -1,
       isSuccess: false,
-      msg: "请填写验证码进行身份验证",
+      msg: errors,
     };
     return false;
+  }
+  // 在注册之前首先判断是否存在该用户名
+  const isRegUser = await finUserAlready(userName);
+  if (!isRegUser) {
+    // 如果方法返回true 则进行
+    await createUser({
+      userName,
+      password: enbcrypt(password),
+    });
+    ctx.body = {
+      code: 1,
+      isSuccess: true,
+      userName,
+      msg: "注册成功",
+    };
+  } else {
+    // 如果存在则返回用户名已经存在的结果
+    ctx.body = {
+      code: -1,
+      isSuccess: false,
+      msg: "您的用户名已存在",
+    };
   }
 });
 
@@ -77,6 +69,15 @@ router.post("/register", async (ctx) => {
 router.post("/login", async (ctx) => {
   // 获取用户的
   const { userName, password } = ctx.request.body;
+  const { isValid,errors } = isVerifyRequired({ userName, password });
+  if (!isValid) {
+    ctx.body = {
+      code: -1,
+      isSuccess: false,
+      msg: errors,
+    };
+    return false;
+  }
   const findUser = await finUserAlready(userName);
   if (findUser) {
     // 使用bcrypt方法进行密码与数据库中加密的密码进行校验
@@ -106,7 +107,7 @@ router.post("/login", async (ctx) => {
       };
     }
   } else {
-    ERROR_NOREG(ctx)
+    ERROR_NOREG(ctx);
   }
 });
 
@@ -139,7 +140,7 @@ router.get("/userInfo", auth, async (ctx) => {
       };
     }
   } catch {
-    ERROR_HANDLE(ctx)
+    ERROR_HANDLE(ctx);
   }
 });
 
@@ -151,10 +152,29 @@ router.get("/userInfo", auth, async (ctx) => {
  *
  */
 router.post("/edit", auth, async (ctx) => {
-  try{
-
+  const { id } = ctx.state.user;
+  try {
+    const result = await editUserInfo(id,ctx.request.body)
+    console.log(result)
+    if(result){
+      ctx.body = {
+        status: 200,
+        code: 1,
+        isSuccess: true,
+        data: {
+          ...result,
+        },
+      }
+    } else {
+      ctx.body = {
+        status: 404,
+        code: -1,
+        isSuccess: false,
+        msg: "您查找的信息不存在",
+      };
+    }
   } catch {
-    ERROR_HANDLE(ctx)
+    ERROR_HANDLE(ctx);
   }
 });
 

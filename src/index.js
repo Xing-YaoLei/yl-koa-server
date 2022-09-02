@@ -8,6 +8,8 @@ import json from "koa-json";
 import indexAPI from './routes/web/index'
 // 用户接口
 import usersAPI from "./routes/web/users";
+// 后台管理接口
+import adminUsersAPI from "./routes/admin/users";
 
 const app = new Koa();
 const router = new Router();
@@ -48,6 +50,10 @@ async function start() {
   const port = process.env.PORT || 3000;
   app.use(usersAPI.routes()).use(router.allowedMethods());
   app.use(indexAPI.routes()).use(router.allowedMethods());
+
+  // 后台管理系统
+  app.use(adminUsersAPI.routes()).use(router.allowedMethods());
+
   app.listen(port, host);
   consola.ready({
     message: `Server listening on http://${host}:${port}`,
