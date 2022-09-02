@@ -1,6 +1,6 @@
 import consolaGlobalInstance from "consola";
 import prisma from "../utils/db";
-import { enbcrypt } from "../utils/tools";
+import { dataEncrypto, dataDecrypto } from "../utils/tools";
 async function createUser(userInfo) {
   // 创建用户
   try {
@@ -38,24 +38,23 @@ async function finUserAlready(userName) {
 
 async function editUserInfo(id, userInfo) {
   const { phone, nickName, address, gender, autograph } = userInfo;
-  console.log(id, userInfo);
   const currentUserInfo = await prisma.user.findUnique({
-    where:{
-      id
-    }
-  })
-  const editResult = await prisma.user.update({
-    where:{
-      id
+    where: {
+      id,
     },
-    data:{
-      phone: phone || currentUserInfo.phone,
+  });
+  const editResult = await prisma.user.update({
+    where: {
+      id,
+    },
+    data: {
+      phone: await dataEncrypto(phone) || currentUserInfo.phone,
       nickName: nickName || currentUserInfo.nickName,
       address: address || currentUserInfo.address,
       gender: gender || currentUserInfo.gender,
-      autograph: autograph || currentUserInfo.autograph
-    }
-  })
-  return editResult
+      autograph: autograph || currentUserInfo.autograph,
+    },
+  });
+  return editResult;
 }
 export { createUser, finUserAlready, editUserInfo };
