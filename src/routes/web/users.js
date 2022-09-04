@@ -1,6 +1,6 @@
 import Router from "koa-router";
 import jwt from "jsonwebtoken";
-import { dataDecrypto } from '../../utils/tools' 
+import { dataDecrypto } from "../../utils/tools";
 import {
   createUser,
   finUserAlready,
@@ -85,7 +85,7 @@ router.post("/login", async (ctx) => {
   const findUser = await finUserAlready(userName);
   if (findUser) {
     // 使用bcrypt方法进行密码与数据库中加密的密码进行校验
-    const isFindUser = await debcrypt(password, findUser.password)
+    const isFindUser = await debcrypt(password, findUser.password);
     if (isFindUser) {
       // 将用户的uuid放入token的hash中
       const payload = {
@@ -134,7 +134,7 @@ router.get("/userInfo", auth, async (ctx) => {
         isSuccess: true,
         data: {
           ...findUser,
-          phone:await dataDecrypto(findUser.phone)
+          phone: await dataDecrypto(findUser.phone),
         },
       };
     } else {
@@ -185,7 +185,26 @@ router.post("/edit", auth, async (ctx) => {
 
 /**
  * 修改密码
- *
+ * auth
+ * 密码修改需要手机号码的验证短信才允许 不需要输入旧密码
  */
+router.post("/repassword", auth, async (ctx) => {
+  const { id } = ctx.state.user
+  const { userName, code } = ctx.request.body;
+  const { isValid, errors } = isVerifyRequired({ userName, code });
+  if (!isValid) {
+    ctx.body = {
+      code: -1,
+      isSuccess: false,
+      msg: errors,
+    };
+    return false;
+  }
+  const result = await prisma.userfindUnique({
+    where: {
+      id,
+    },
+  }).code
+});
 
 export default router;
