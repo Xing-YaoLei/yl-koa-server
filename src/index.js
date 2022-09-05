@@ -10,6 +10,8 @@ import indexAPI from './routes/web/index'
 import usersAPI from "./routes/web/users";
 // 后台管理接口
 import adminUsersAPI from "./routes/admin/users";
+// 上传接口
+import uploadAPI from './routes/web/upload'
 
 const app = new Koa();
 const router = new Router();
@@ -53,7 +55,8 @@ async function start() {
 
   // 后台管理系统
   app.use(adminUsersAPI.routes()).use(router.allowedMethods());
-
+  // 上传文件接口
+  app.use(uploadAPI.routes()).use(router.allowedMethods());
   app.listen(port, host);
   consola.ready({
     message: `Server listening on http://${host}:${port}`,

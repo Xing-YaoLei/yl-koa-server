@@ -5,11 +5,11 @@ import {
   createUser,
   finUserAlready,
   editUserInfo,
+  rePasswordController,
 } from "../../controllers/UserController";
 import { isVerifyRequired, enbcrypt, debcrypt } from "../../utils/tools";
 import { ERROR_HANDLE, ERROR_NOREG } from "../../response/ERROR";
 import keys from "../../utils/keys";
-import bcrypt from "bcryptjs";
 import auth from "../../utils/jwt";
 
 const router = new Router({
@@ -126,7 +126,6 @@ router.get("/userInfo", auth, async (ctx) => {
   try {
     const { userName } = ctx.state.user;
     const findUser = await finUserAlready(userName);
-    console.log();
     if (findUser) {
       ctx.body = {
         status: 200,
@@ -189,9 +188,9 @@ router.post("/edit", auth, async (ctx) => {
  * 密码修改需要手机号码的验证短信才允许 不需要输入旧密码
  */
 router.post("/repassword", auth, async (ctx) => {
-  const { id } = ctx.state.user
-  const { userName, code } = ctx.request.body;
-  const { isValid, errors } = isVerifyRequired({ userName, code });
+  const { id } = ctx.state.user;
+  const { code, newPassword } = ctx.request.body;
+  const { isValid, errors } = isVerifyRequired({ code, newPassword });
   if (!isValid) {
     ctx.body = {
       code: -1,
@@ -200,11 +199,20 @@ router.post("/repassword", auth, async (ctx) => {
     };
     return false;
   }
-  const result = await prisma.userfindUnique({
-    where: {
-      id,
-    },
-  }).code
+  // 前方需要添加一个额外的逻辑 需要通过验证短信验证码才允许进行密码的重置
+  const result = await rePasswordController(id, newPassword);
+  if (result) {
+    ctx.body = {
+      status: 200,
+      code: 1,
+      isSuccess: true,
+      data: {
+        msg: "密码修改成功",
+      },
+    };
+    return false;
+  }
+  ERROR_HANDLE(ctx);
 });
 
 export default router;

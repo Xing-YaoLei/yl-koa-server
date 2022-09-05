@@ -1,6 +1,6 @@
 import consolaGlobalInstance from "consola";
 import prisma from "../utils/db";
-import { dataEncrypto, dataDecrypto } from "../utils/tools";
+import { dataEncrypto, dataDecrypto, enbcrypt } from "../utils/tools";
 async function createUser(userInfo) {
   // 创建用户
   try {
@@ -33,7 +33,7 @@ async function finUserAlready(userName) {
 }
 
 /**
- *
+ * 修改个人信息
  */
 
 async function editUserInfo(id, userInfo) {
@@ -48,7 +48,7 @@ async function editUserInfo(id, userInfo) {
       id,
     },
     data: {
-      phone: await dataEncrypto(phone) || currentUserInfo.phone,
+      phone: (await dataEncrypto(phone)) || currentUserInfo.phone,
       nickName: nickName || currentUserInfo.nickName,
       address: address || currentUserInfo.address,
       gender: gender || currentUserInfo.gender,
@@ -57,4 +57,17 @@ async function editUserInfo(id, userInfo) {
   });
   return editResult;
 }
-export { createUser, finUserAlready, editUserInfo };
+
+// 修改用户密码，接受的参数为id和用户新的密码
+const rePasswordController = async (id, newPassword) => {
+  const result = await prisma.user.update({
+    where: {
+      id,
+    },
+    data: {
+      password: enbcrypt(newPassword),
+    },
+  });
+  return result;
+};
+export { createUser, finUserAlready, editUserInfo, rePasswordController };
