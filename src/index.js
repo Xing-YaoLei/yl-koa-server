@@ -1,7 +1,9 @@
 import Koa from "koa";
+import path from 'path'
 import Router from "koa-router";
 import consola from "consola";
-import bodyParser from "koa-bodyparser";
+import koaBody from "koa-body";
+// 可以替换bodyParser可以得到post请求以及支持文件上传
 import cors from "koa2-cors";
 import serve from "koa-static";
 import json from "koa-json";
@@ -10,17 +12,24 @@ import indexAPI from './routes/web/index'
 import usersAPI from "./routes/web/users";
 // 后台管理接口
 import adminUsersAPI from "./routes/admin/users";
-// 上传接口
-import uploadAPI from './routes/web/upload'
 
 const app = new Koa();
 const router = new Router();
-// 接受数据请求
+
 app.use(
-  bodyParser({
-    extendTypes: ["json", "form", "text"],
+  koaBody({
+    multipart:true,
+    // encoding:'gzip',
+    formidable:{
+      uploadDir:path.join(__dirname,'public/upload'),
+      keepExtensions: true,
+      maxFieldsSize: 2 * 1024 * 1024,
+      onFileBegin:(name,file) => {
+        // console.log(name,file)
+      }
+    }
   })
-);
+)
 // 返回数据格式转换
 app.use(json());
 // 定义静态资源目录
@@ -52,11 +61,8 @@ async function start() {
   const port = process.env.PORT || 3000;
   app.use(usersAPI.routes()).use(router.allowedMethods());
   app.use(indexAPI.routes()).use(router.allowedMethods());
-
   // 后台管理系统
   app.use(adminUsersAPI.routes()).use(router.allowedMethods());
-  // 上传文件接口
-  app.use(uploadAPI.routes()).use(router.allowedMethods());
   app.listen(port, host);
   consola.ready({
     message: `Server listening on http://${host}:${port}`,

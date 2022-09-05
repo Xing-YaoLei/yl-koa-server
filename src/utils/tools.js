@@ -1,4 +1,5 @@
-const bcrypt = require("bcryptjs");
+import bcrypt from "bcryptjs";
+import fs from "fs";
 import CryptoJS from "crypto-js";
 import { AES_SECRET } from "./keys";
 /**
@@ -25,9 +26,9 @@ export const debcrypt = async (password, currentPassword) => {
  * 方法只能加密文本如果需要加密对象需要进行二次开发
  */
 export const dataEncrypto = async (data) => {
-  if((data ?? '') == ''){
-    return false
-  } 
+  if ((data ?? "") == "") {
+    return false;
+  }
   const ciphertext = await CryptoJS.AES.encrypt(data, AES_SECRET).toString();
   return ciphertext;
 };
@@ -62,4 +63,14 @@ export const isVerifyRequired = (rest) => {
     isValid,
     errors: msg,
   };
+};
+
+/**
+ *
+ */
+
+export const clearImageFile = (imagePath) => {
+  fs.unlink(imagePath, ()=>{
+    console.log('图片已传递至七牛云服务,本地删除完成')
+  })
 };

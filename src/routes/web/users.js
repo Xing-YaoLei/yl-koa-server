@@ -8,7 +8,7 @@ import {
   rePasswordController,
 } from "../../controllers/UserController";
 import { isVerifyRequired, enbcrypt, debcrypt } from "../../utils/tools";
-import { ERROR_HANDLE, ERROR_NOREG } from "../../response/ERROR";
+import { ERROR_HANDLE, ERROR_NOREG } from "../../utils/common";
 import keys from "../../utils/keys";
 import auth from "../../utils/jwt";
 

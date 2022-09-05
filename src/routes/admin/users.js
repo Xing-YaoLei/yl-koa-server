@@ -1,8 +1,7 @@
 import Router from "koa-router";
 import jwt from "jsonwebtoken";
 import { createUser, finUserAlready } from "../../controllers/UserController";
-import enbcrypt from "../../utils/tools";
-import { ERROR_HANDLE,ERROR_NOREG } from '../../response/ERROR'
+import { ERROR_HANDLE, ERROR_NOREG } from "../../utils/common";
 import keys from "../../utils/keys";
 import bcrypt from "bcryptjs";
 import auth from "../../utils/jwt";
@@ -63,7 +62,7 @@ router.post("/login", async (ctx) => {
       };
     }
   } else {
-    ERROR_NOREG(ctx)
+    ERROR_NOREG(ctx);
   }
 });
 

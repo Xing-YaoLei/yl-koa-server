@@ -1,3 +1,21 @@
+export const successResponse = (data) => {
+  return {
+    data: {
+      code: 0,
+      msg: "请求成功",
+    },
+  };
+};
+
+export const errorResponse = (msg) => {
+  return {
+    data: {
+      code: -1,
+      msg,
+    },
+  };
+};
+
 export const ERROR_HANDLE = (ctx) => {
   // 服务端异常错误
   return (ctx.body = {
@@ -17,3 +35,13 @@ export const ERROR_NOREG = (ctx) => {
     msg: "该账号暂未注册,请先注册",
   });
 };
+
+
+export const uploadSuccess = (url) => {
+  return {
+    data: {
+      code: 0,
+      url
+    },
+  }; 
+}
