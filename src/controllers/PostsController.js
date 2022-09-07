@@ -17,6 +17,13 @@ export const findPosts = async ({ skip, take }) => {
   });
   return result;
 };
+
+export const findPostsCategory = async () => {
+  const result = await prisma.category.findMany();
+  console.log(result);
+  return result;
+};
+
 /**
  *
  * @param {*} obj
@@ -35,7 +42,7 @@ export const addCategory = async (obj) => {
       name,
     },
   });
-  console.log(name)
+  console.log(name);
   if (!findCategory) {
     const result = await prisma.category.create({
       data: {
@@ -44,7 +51,7 @@ export const addCategory = async (obj) => {
     });
     return result;
   }
-  return false
+  return false;
 };
 
 /**
@@ -53,23 +60,38 @@ export const addCategory = async (obj) => {
  * @returns 新增文章数据
  */
 export const postsCreate = async (obj) => {
-  const { title, desc, content, category } = obj;
+  const { title, desc, content, categoryId, id } = obj || {};
   const { isValid, errors } = isVerifyRequired({
     title,
     desc,
     content,
-    category,
+    categoryId,
   });
   if (!isValid) {
     return errorResponse(errors);
   }
-  const result = await prisma.post.create({
-    data: {
-      title,
-      desc,
-      content,
-      category,
-    },
-  });
-  return result
+  // 判断categoryId是否为数组
+  const categoryIdList = JSON.parse(categoryId);
+  if (Array.isArray(categoryIdList)) {
+    console.log("isArray");
+    console.log(categoryIdList);
+    return false;
+  }
+  console.log(categoryIdList);
+  // const result = await prisma.post.create({
+  //   data: {
+  //     title,
+  //     desc,
+  //     content,
+  //     category: {
+  //       connect: categoryIdList,
+  //     },
+  //     author: {
+  //       connect: {
+  //         id,
+  //       },
+  //     },
+  //   },
+  // });
+  // return result;
 };

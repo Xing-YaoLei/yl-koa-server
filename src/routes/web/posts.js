@@ -1,5 +1,5 @@
 import Router from "koa-router";
-import { findPosts, postsCreate } from "../../controllers/PostsController";
+import { findPosts, postsCreate,findPostsCategory } from "../../controllers/PostsController";
 import { isVerifyRequired } from "../../utils/tools";
 import { ERROR_HANDLE, successResponse } from "../../utils/common";
 import auth from "../../utils/jwt";
@@ -16,13 +16,19 @@ router.get("/", async (ctx) => {
   ctx.body = successResponse(findResult);
 });
 
+router.get('/getcategory',async(ctx) => {
+  const findResult = await findPostsCategory({})
+  ctx.body = successResponse(findResult);
+})
+
 /**
  * @desc 新增文章内容
  * @param { category, title, desc, content }
  * @tip category需要通过getCategory接口获取具体的category类型才可以
  */
 router.post("/add", auth, async (ctx) => {
-  const result = await postsCreate(ctx.request.body);
+  const { id } = ctx.state.user
+  const result = await postsCreate({...ctx.request.body,id});
   ctx.body = result;
 });
 

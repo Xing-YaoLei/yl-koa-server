@@ -18,6 +18,7 @@ model user {
   // unique 不允许重复
   // 用户名 不能重复 @map表示为字段定义别名
   password    String   @default("")
+  email       String?  @unique
   phone       String?  @unique
   // 手机号
   nickName    String?  @default("一个不愿意透漏姓名的大佬") @map("nick_name")
@@ -63,6 +64,7 @@ model post {
   // 查看人数
   published Boolean    @default(false)
   // 是否为发布状态
+  likes     Int        @default(0)
   createAt  DateTime   @default(now()) @map("create_at")
   updateAt  DateTime   @updatedAt @map("update_at")
 
