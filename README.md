@@ -13,6 +13,7 @@ npm install
 ```sh
 npx prisma db push # 初始化数据库
 npx prisma db seed # 初始化数据
+npx prisma studio  # 查看数据库中的数据 可以进行增删改查的操作
 
 # development
 npm run start

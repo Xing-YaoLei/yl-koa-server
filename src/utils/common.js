@@ -1,18 +1,15 @@
 export const successResponse = (data) => {
   return {
-    data: {
-      code: 0,
-      msg: "请求成功",
-    },
+    code: 0,
+    msg: "请求成功",
+    data,
   };
 };
 
 export const errorResponse = (msg) => {
   return {
-    data: {
-      code: -1,
-      msg,
-    },
+    code: -1,
+    msg,
   };
 };
 
@@ -36,12 +33,9 @@ export const ERROR_NOREG = (ctx) => {
   });
 };
 
-
 export const uploadSuccess = (url) => {
   return {
-    data: {
-      code: 0,
-      url
-    },
-  }; 
-}
+    code: 0,
+    url,
+  };
+};
