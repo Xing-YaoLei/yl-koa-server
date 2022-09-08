@@ -71,27 +71,47 @@ export const postsCreate = async (obj) => {
     return errorResponse(errors);
   }
   // 判断categoryId是否为数组
-  const categoryIdList = JSON.parse(categoryId);
-  if (Array.isArray(categoryIdList)) {
-    console.log("isArray");
-    console.log(categoryIdList);
-    return false;
+  try {
+    // 查询数据库中所有的文章类型
+
+    // 将获取的数据转为JSON对象
+    let categoryIdList = JSON.parse(categoryId);
+    // 如果为纯数字则将数组也放入数组中
+    if (typeof categoryIdList === "number") {
+      categoryIdList = [categoryIdList];
+    }
+    // 循环遍历
+    const databaseCategory = await prisma.category.findMany({
+      where: {
+        id: {
+          in:categoryIdList.map((item) => {
+            return item;
+          })
+        }
+      },
+      select:{
+        id:true
+      }
+    });
+    const result = await prisma.post.create({
+      data: {
+        title,
+        desc,
+        content,
+        category: {
+          connect: databaseCategory,
+        },
+        author: {
+          connect: {
+            id,
+          },
+        },
+      },
+    });
+    return result;
+  } catch {
+    return errorResponse({
+      msg: "categoryId参数应该为纯数组或数组的形式",
+    });
   }
-  console.log(categoryIdList);
-  // const result = await prisma.post.create({
-  //   data: {
-  //     title,
-  //     desc,
-  //     content,
-  //     category: {
-  //       connect: categoryIdList,
-  //     },
-  //     author: {
-  //       connect: {
-  //         id,
-  //       },
-  //     },
-  //   },
-  // });
-  // return result;
 };
