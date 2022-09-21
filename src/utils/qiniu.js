@@ -1,7 +1,7 @@
 import qiniu from "qiniu";
 import path from "path";
 import { clearImageFile } from './tools'
-const qiniuBaseUrl = "http://rhlbzg7qe.bkt.clouddn.com/";
+const qiniuBaseUrl = "http://oss.oh-undefined.com/";
 const ak = "vbXqqxdLmaGwaTEx44zVA5xFtuZ0Y589a4VRLrRb";
 // 七牛云的账号的AK
 const sk = "DWMi4K9MkWMwnUF3SBvaVAoGeejist1aCY15vqGP";
