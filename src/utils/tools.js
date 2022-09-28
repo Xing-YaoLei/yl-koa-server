@@ -66,7 +66,7 @@ export const isVerifyRequired = (rest) => {
 };
 
 /**
- *
+ * 图片上传到服务器后，将本地public文件进行删除处理，减少项目本地大小
  */
 
 export const clearImageFile = (imagePath) => {
@@ -74,3 +74,14 @@ export const clearImageFile = (imagePath) => {
     console.log('图片已传递至七牛云服务,本地删除完成')
   })
 };
+
+
+/**
+ * 判断是否为手机号码
+ */
+
+export const isMobile = (phone) => {
+  return /^1[3-9]\d{9}$/.test(phone)
+}
+
+

@@ -1,6 +1,5 @@
 import Router from "koa-router";
 import jwt from "jsonwebtoken";
-import { dataDecrypto } from "../../utils/tools";
 import {
   createUser,
   finUserAlready,
@@ -132,8 +131,7 @@ router.get("/userInfo", auth, async (ctx) => {
         code: 1,
         isSuccess: true,
         data: {
-          ...findUser,
-          phone: await dataDecrypto(findUser.phone),
+          ...findUser
         },
       };
     } else {

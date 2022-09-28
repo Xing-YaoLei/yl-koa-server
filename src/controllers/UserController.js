@@ -1,6 +1,7 @@
 import consolaGlobalInstance from "consola";
 import prisma from "../utils/db";
-import { dataEncrypto, dataDecrypto, enbcrypt } from "../utils/tools";
+import { dataEncrypto, dataDecrypto, enbcrypt,isMobile } from "../utils/tools";
+
 async function createUser(userInfo) {
   // 创建用户
   try {
@@ -18,9 +19,22 @@ async function createUser(userInfo) {
 
 /**
  * 判断用户是否存在 如果存在则返回false
+ * 接受的参数为手机号或者注册时候的用户名
  * @returns
  */
 async function finUserAlready(userName) {
+  // 这个地方可能是手机号也可能是用户名，提供一个方法判断是否为手机号码
+  if(isMobile(userName)){
+    const users = await prisma.user.findUnique({
+      where: {
+        phone: userName,
+      },
+    });
+    if (users) {
+      return users;
+    }
+    return false;
+  }
   const users = await prisma.user.findUnique({
     where: {
       userName,
@@ -48,7 +62,7 @@ async function editUserInfo(id, userInfo) {
       id,
     },
     data: {
-      phone: (await dataEncrypto(phone)) || currentUserInfo.phone,
+      phone: phone || currentUserInfo.phone,
       nickName: nickName || currentUserInfo.nickName,
       address: address || currentUserInfo.address,
       gender: gender || currentUserInfo.gender,
