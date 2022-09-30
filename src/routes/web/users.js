@@ -101,9 +101,7 @@ router.post("/login", async (ctx) => {
         token,
       };
     } else {
-      ctx.status = 404;
       ctx.body = {
-        status: 404,
         code: -1,
         isSuccess: false,
         msg: "密码错误,请尝试重新登陆",
