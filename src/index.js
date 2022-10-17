@@ -42,21 +42,21 @@ app.use(
     credentails: true,
     origin: (ctx) => {
       let origin = ctx.request.header.origin;
-      return origin;
+      return origin;  
     },
   })
 );
 // 解决跨域问题
-app.use(async (ctx, next) => {
-  ctx.set("Access-Control-Allow-Origin", ctx.headers.origin); //此处使用*会出现问题
-  ctx.set("Access-Control-Allow-Headers", "content-type");
-  ctx.set(
-    "Access-Control-Allow-Methods",
-    "OPTIONS,GET,HEAD,PUT,POST,DELETE,PATCH"
-  );
-  ctx.set("Access-Control-Allow-Credentials", true);
-  await next();
-});
+// app.use(async (ctx, next) => {
+//   ctx.set("Access-Control-Allow-Origin", ctx.headers.origin); // 如果后续需要携带cookie此处使用*会出现问题
+//   ctx.set("Access-Control-Allow-Headers", "content-type");
+//   ctx.set(
+//     "Access-Control-Allow-Methods",
+//     "OPTIONS,GET,HEAD,PUT,POST,DELETE,PATCH"
+//   );
+//   ctx.set("Access-Control-Allow-Credentials", true);
+//   await next();
+// });
 
 async function start() {
   const host = process.env.HOST || "127.0.0.1";
