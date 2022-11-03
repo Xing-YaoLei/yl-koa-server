@@ -1,5 +1,5 @@
 import Koa from "koa";
-import path from 'path'
+import path from "path";
 import Router from "koa-router";
 import consola from "consola";
 import koaBody from "koa-body";
@@ -7,31 +7,31 @@ import koaBody from "koa-body";
 import cors from "koa2-cors";
 import serve from "koa-static";
 import json from "koa-json";
-import indexAPI from './routes/web/index'
+import indexAPI from "./routes/web/index";
 // 用户接口
 import usersAPI from "./routes/web/users";
-import postsAPI from './routes/web/posts'
+import postsAPI from "./routes/web/posts";
 // 后台管理接口
 import adminUsersAPI from "./routes/admin/users";
-import adminPostsAPI from './routes/admin/posts'
+import adminPostsAPI from "./routes/admin/posts";
 
 const app = new Koa();
 const router = new Router();
 
 app.use(
   koaBody({
-    multipart:true,
+    multipart: true,
     // encoding:'gzip',
-    formidable:{
-      uploadDir:path.join(__dirname,'public/upload'),
+    formidable: {
+      uploadDir: path.join(__dirname, "public/upload"),
       keepExtensions: true,
       maxFieldsSize: 2 * 1024 * 1024,
-      onFileBegin:(name,file) => {
+      onFileBegin: (name, file) => {
         // console.log(name,file)
-      }
-    }
+      },
+    },
   })
-)
+);
 // 返回数据格式转换
 app.use(json());
 // 定义静态资源目录
@@ -42,7 +42,7 @@ app.use(
     credentails: true,
     origin: (ctx) => {
       let origin = ctx.request.header.origin;
-      return origin;  
+      return origin;
     },
   })
 );
