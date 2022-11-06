@@ -6,7 +6,7 @@ import { ERROR_HANDLE } from "../../utils/common";
 import auth from "../../utils/jwt";
 import { uploadSuccess } from "../../utils/common";
 const router = new Router({
-  prefix: "/",
+  prefix: "/api/v1",
 });
 
 router.get("/", async (ctx) => {

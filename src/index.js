@@ -17,7 +17,6 @@ import adminPostsAPI from "./routes/admin/posts";
 
 const app = new Koa();
 const router = new Router();
-
 app.use(
   koaBody({
     multipart: true,

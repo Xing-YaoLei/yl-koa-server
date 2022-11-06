@@ -3,7 +3,7 @@ import { findPosts, addCategory } from "../../controllers/PostsController";
 import { successResponse, errorResponse } from "../../utils/common";
 import auth from "../../utils/jwt";
 const router = new Router({
-  prefix: "/admin/posts",
+  prefix: "/api/v1/admin/posts",
 });
 /**
  * @desc 查询所有已发布的文章

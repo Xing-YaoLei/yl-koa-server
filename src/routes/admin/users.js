@@ -8,7 +8,7 @@ import auth from "../../utils/jwt";
 import { prisma } from "@prisma/client";
 
 const router = new Router({
-  prefix: "/admin",
+  prefix: "/admin/v1/users",
 });
 
 router.get("/", async (ctx) => {

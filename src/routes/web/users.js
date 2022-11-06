@@ -12,7 +12,7 @@ import keys from "../../utils/keys";
 import auth from "../../utils/jwt";
 
 const router = new Router({
-  prefix: "/users",
+  prefix: "/api/v1/users",
 });
 
 router.get("/", async (ctx) => {
@@ -129,7 +129,7 @@ router.get("/userInfo", auth, async (ctx) => {
         code: 1,
         isSuccess: true,
         data: {
-          ...findUser
+          ...findUser,
         },
       };
     } else {

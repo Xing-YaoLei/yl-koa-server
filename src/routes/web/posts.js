@@ -1,10 +1,14 @@
 import Router from "koa-router";
-import { findPosts, postsCreate,findPostsCategory } from "../../controllers/PostsController";
+import {
+  findPosts,
+  postsCreate,
+  findPostsCategory,
+} from "../../controllers/PostsController";
 import { isVerifyRequired } from "../../utils/tools";
 import { ERROR_HANDLE, successResponse } from "../../utils/common";
 import auth from "../../utils/jwt";
 const router = new Router({
-  prefix: "/posts",
+  prefix: "/api/v1/posts",
 });
 /**
  * @desc 查询所有已发布的文章
@@ -16,10 +20,10 @@ router.get("/", async (ctx) => {
   ctx.body = successResponse(findResult);
 });
 
-router.get('/getcategory',async(ctx) => {
-  const findResult = await findPostsCategory({})
+router.get("/getcategory", async (ctx) => {
+  const findResult = await findPostsCategory({});
   ctx.body = successResponse(findResult);
-})
+});
 
 /**
  * @desc 新增文章内容
@@ -27,8 +31,8 @@ router.get('/getcategory',async(ctx) => {
  * @tip category需要通过getCategory接口获取具体的category类型才可以
  */
 router.post("/add", auth, async (ctx) => {
-  const { id } = ctx.state.user
-  const result = await postsCreate({...ctx.request.body,id});
+  const { id } = ctx.state.user;
+  const result = await postsCreate({ ...ctx.request.body, id });
   ctx.body = result;
 });
 
