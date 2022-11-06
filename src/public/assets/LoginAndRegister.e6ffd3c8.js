@@ -1,0 +1,1 @@
+import{_ as e,o as n,c as o,a as t}from"./index.6b7737c9.js";const s={},c=t("div",null,"Login And Register",-1),r=[c];function _(a,i){return n(),o("div",null,r)}const l=e(s,[["render",_]]);export{l as default};
