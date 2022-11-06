@@ -1,6 +1,7 @@
 import Koa from "koa";
 import path from "path";
 import Router from "koa-router";
+import { historyApiFallback } from "koa2-connect-history-api-fallback";
 import consola from "consola";
 import koaBody from "koa-body";
 // 可以替换bodyParser可以得到post请求以及支持文件上传
@@ -33,6 +34,8 @@ app.use(
 );
 // 返回数据格式转换
 app.use(json());
+// 为Vue中history路由刷新404页面提供解决方案
+app.use(historyApiFallback());
 // 定义静态资源目录
 app.use(serve(__dirname + "/public/"));
 // 跨域解决
