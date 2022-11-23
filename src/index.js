@@ -1,7 +1,7 @@
 import Koa from "koa";
 import path from "path";
 import Router from "koa-router";
-import { historyApiFallback } from "koa2-connect-history-api-fallback";
+// import { historyApiFallback } from "koa2-connect-history-api-fallback";
 import consola from "consola";
 import koaBody from "koa-body";
 // 可以替换bodyParser可以得到post请求以及支持文件上传
@@ -15,7 +15,8 @@ import postsAPI from "./routes/web/posts";
 // 后台管理接口
 import adminUsersAPI from "./routes/admin/users";
 import adminPostsAPI from "./routes/admin/posts";
-
+// 接口转发
+import corsAPI from "./routes/other/cors";
 const app = new Koa();
 const router = new Router();
 app.use(
@@ -35,7 +36,8 @@ app.use(
 // 返回数据格式转换
 app.use(json());
 // 为Vue中history路由刷新404页面提供解决方案
-app.use(historyApiFallback());
+// app.use(historyApiFallback());
+// historyApiFallback会造成get请求全部被拦截没有响应
 // 定义静态资源目录
 app.use(serve(__dirname + "/public/"));
 // 跨域解决
@@ -48,17 +50,6 @@ app.use(
     },
   })
 );
-// 解决跨域问题
-// app.use(async (ctx, next) => {
-//   ctx.set("Access-Control-Allow-Origin", ctx.headers.origin); // 如果后续需要携带cookie此处使用*会出现问题
-//   ctx.set("Access-Control-Allow-Headers", "content-type");
-//   ctx.set(
-//     "Access-Control-Allow-Methods",
-//     "OPTIONS,GET,HEAD,PUT,POST,DELETE,PATCH"
-//   );
-//   ctx.set("Access-Control-Allow-Credentials", true);
-//   await next();
-// });
 
 async function start() {
   const host = process.env.HOST || "127.0.0.1";
@@ -69,6 +60,8 @@ async function start() {
   // 后台管理系统
   app.use(adminUsersAPI.routes()).use(router.allowedMethods());
   app.use(adminPostsAPI.routes()).use(router.allowedMethods());
+  // 接口转发接口
+  app.use(corsAPI.routes()).use(router.allowedMethods());
   app.listen(port, host);
   consola.ready({
     message: `Server listening on http://${host}:${port}`,

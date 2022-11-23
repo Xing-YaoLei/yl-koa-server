@@ -1,5 +1,4 @@
 import Router from "koa-router";
-import path from "path";
 import { isVerifyRequired, enbcrypt, debcrypt } from "../../utils/tools";
 import { uploadImageToQiniu } from "../../utils/qiniu";
 import { ERROR_HANDLE } from "../../utils/common";
