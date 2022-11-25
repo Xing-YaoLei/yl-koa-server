@@ -1,1 +1,0 @@
-import"./index.3a43eab2.js";const e=e=>{let t="";try{t=getComputedStyle(document.documentElement).getPropertyValue(e)}catch(a){console.error(a)}return t},t=e=>e.map((e=>({value:e.id,label:e.name})));export{t as f,e as g};
