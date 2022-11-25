@@ -1,0 +1,1 @@
+import"./index.da4b159e.js";const e=e=>{let t="";try{t=getComputedStyle(document.documentElement).getPropertyValue(e)}catch(o){console.error(o)}return t},t=e=>e.map((e=>({value:e.id,label:e.name})));export{t as f,e as g};
