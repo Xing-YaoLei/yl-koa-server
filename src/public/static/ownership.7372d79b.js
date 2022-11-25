@@ -1,1 +1,0 @@
-import{a8 as e}from"./index.ce92de4c.js";function t(t){return e({url:"/vehicle/nodes/queryNodesList",method:"post",data:t||{}})}function d(t){return e({url:"/vehicle/nodes/editNodes",method:"post",data:t||{}})}function o(t){return e({url:`/vehicle/nodes/deleteNodesById/${t}`,method:"delete"})}export{d as a,o as d,t as f};
