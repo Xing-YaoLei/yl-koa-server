@@ -1,7 +1,6 @@
 import Router from "koa-router";
-import request from "request";
+import request from "request-promise-native";
 import { successResponse, errorResponse } from "../../utils/common";
-import { isVerifyRequired } from "../../utils/tools";
 
 const router = new Router({
   prefix: "/api/v1/proxy",
