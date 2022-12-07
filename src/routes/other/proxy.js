@@ -14,19 +14,38 @@ const router = new Router({
 
 router.all("/", async (ctx) => {
   // 获取请求的地址以及请求方法
-  const url = ctx.query.url;
   const method = ctx.method.toLowerCase();
   // 发送数据请求
-  const response = await request({
-    method,
-    uri: url,
-    headers: ctx.headers,
-    body: ctx.request.body,
-  });
-  if (response) {
-    ctx.body = successResponse(response);
-  } else {
-    ctx.body = errorResponse("请求错误");
+  if (method === "get") {
+    const params = ctx.query;
+    const result = await request.get({
+      uri: params.url,
+      json: true,
+    });
+    ctx.body = successResponse(result);
+  } else if (method === "post") {
+    const data = ctx.request.body;
+    const result = await request.post({
+      uri: data.url,
+      body: data,
+      json: true,
+    });
+    ctx.body = successResponse(result);
+  } else if (method === "put") {
+    const params = ctx.query;
+    const result = await request.put({
+      uri: params.url,
+      body: params,
+      json: true,
+    });
+    ctx.body = successResponse(result);
+  } else if (method == "delete") {
+    const params = ctx.params;
+    const result = await request.delete({
+      uri: `${params.url}/${params.id}`,
+      json: true,
+    });
+    ctx.body = successResponse(result);
   }
 });
 
