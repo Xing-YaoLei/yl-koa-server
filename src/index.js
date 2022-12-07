@@ -16,7 +16,7 @@ import postsAPI from "./routes/web/posts";
 import adminUsersAPI from "./routes/admin/users";
 import adminPostsAPI from "./routes/admin/posts";
 // 接口转发
-import corsAPI from "./routes/other/cors";
+import proxyAPI from "./routes/other/proxy";
 const app = new Koa();
 const router = new Router();
 app.use(
@@ -61,7 +61,7 @@ async function start() {
   app.use(adminUsersAPI.routes()).use(router.allowedMethods());
   app.use(adminPostsAPI.routes()).use(router.allowedMethods());
   // 接口转发接口
-  app.use(corsAPI.routes()).use(router.allowedMethods());
+  app.use(proxyAPI.routes()).use(router.allowedMethods());
   app.listen(port, host);
   consola.ready({
     message: `Server listening on http://${host}:${port}`,
